@@ -1,0 +1,71 @@
+{% extends 'photos/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row my-3">
+        <div class="col-md-12">
+            <h1>List images</h1>
+            <div class="col-md-12 text-end">
+                <button type="button" class="btn btn-primary" onclick="location.href='{% url 'photos:add_image' %}'">Add Image</button>
+            </div>
+            <table class="table  text-center">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Album</th>
+                  <th scope="col">Width</th>
+                  <th scope="col">Height</th>
+                  <th scope="col">Color</th>
+                  <th scope="col">URL</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for image in images_p %}
+                <tr>
+                  <th scope="row">{{ image.id }}</th>
+                  <td>{{ image.title }}</td>
+                  <td>{{ image.albumId }}</td>
+                  <td>{{ image.width }}</td>
+                  <td>{{ image.height }}</td>
+                  <td>{{ image.color }}</td>
+                  <td>{{ image.image }}</td>
+                  <td>
+                      <a href="{% url 'photos:update_image' image.id %}">Update</a>
+                      <a href="{% url 'photos:delete_image' image.id %}">Delete</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+        </div>
+
+
+        <div class="row mt-3">
+            <nav aria-label="...">
+              <ul class="pagination text-center justify-content-center align-content-center">
+                {% if images_p.has_previous %}
+                    <li class="page-item">
+                      <a href="?page=1" class="page-link">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                      <a href="?page={{ images_p.previous_page_number }}" class="page-link">Previous</a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item"><a class="page-link" href="#">Page {{ images_p.number }} of {{ images_p.paginator.num_pages }}</a></li>
+
+                {% if images_p.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ images_p.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ images_p.paginator.num_pages }}">Last &raquo;</a>
+                    </li>
+                {% endif %}
+              </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
